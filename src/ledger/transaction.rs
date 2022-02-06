@@ -5,10 +5,10 @@ use super::r#type::Type;
 
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Transaction {
-    r#type: Type,
-    client: u32,
-    tx: u32,
-    amount: f64,
+    pub r#type: Type,
+    pub client: u32,
+    pub tx: u32,
+    pub amount: f64,
 }
 
 impl Transaction {
@@ -21,6 +21,7 @@ impl Transaction {
             .delimiter(b',')
             .has_headers(true)
             .trim(Trim::All)
+            .flexible(true)
             .from_reader(inner)
             .into_deserialize()
     }
@@ -36,7 +37,7 @@ mod tests {
     #[test]
     fn deserialze() {
         let expected = Transaction { r#type: Type::Deposit, client: 1, tx: 2, amount: 5.50 };
-        let sample = "type, client, tx, amount\ndeposit,    1,   2, 5.50";
+        let sample = "type, client, tx, amount\ndeposit,    1,   2, 5.50\nwithdrawal,1,1";
         let buffer = BufReader::new(sample.as_bytes());
         let mut reader = Transaction::reader(buffer);
         let entry = reader.next();
@@ -44,5 +45,7 @@ mod tests {
         let entry = entry.unwrap();
         assert!(entry.is_ok(), "{:?}", entry.err());
         assert_eq!(expected, entry.unwrap());
+        let entry = reader.next();
+        assert!(entry.is_some());
     }
 }
