@@ -3,7 +3,7 @@ use serde::{Serialize};
 
 #[derive(Debug, Serialize, PartialEq)]
 pub struct Account {
-    pub client: u32,
+    pub client: u16,
     pub available: f64,
     pub held: f64,
     pub total: f64,
@@ -12,7 +12,7 @@ pub struct Account {
 
 impl Account {
 
-    pub fn new(client: u32) -> Self {
+    pub fn new(client: u16) -> Self {
         Self {
             client,
             available: 0.0,
@@ -22,6 +22,15 @@ impl Account {
         }
     }
 
+    /// Creates a CSV writer with proper configuration.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `inner` - the destination of the serialization
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the configured CSV writer.
     pub fn writer<W>(inner: W) -> Writer<W> 
     where
         W: std::io::Write

@@ -6,7 +6,7 @@ edition = "2021"
 authors = [ "jilsahm" ]
 
 [dependencies]
-clap = { version = "3.0.14", features = ["cargo", "derive", "env", "regex"] }
+clap = { version = "3.0.14", features = ["cargo", "derive", "env"] }
 csv = "1.1.6"
 dotenv = "0.15.0"
 env_logger = "0.9.0"

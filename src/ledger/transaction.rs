@@ -6,13 +6,23 @@ use super::r#type::Type;
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Transaction {
     pub r#type: Type,
-    pub client: u32,
+    pub client: u16,
     pub tx: u32,
     pub amount: f64,
 }
 
 impl Transaction {
 
+    /// Creates a CSV reader with proper configuration for deserializing
+    /// transactions from source R.
+    /// 
+    /// # Arguments
+    /// 
+    /// * `inner` - the source of the CSV data
+    /// 
+    /// # Returns
+    /// 
+    /// Returns the deserialization iter.
     pub fn reader<R>(inner: R) -> DeserializeRecordsIntoIter<R, Self> 
     where  
         R: std::io::Read
